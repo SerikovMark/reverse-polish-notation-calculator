@@ -90,6 +90,14 @@ public class ReversePolishNotationCalculatorTest {
     }
 
     @Test
+    public void calculatorShouldBeAbleToCalculateComplexInput() {
+        String input = "3 1 * 1 / 5 - 8 +";
+        List<CalculationResult> results = calculator.calculate(numbers, input);
+        assertEquals("Action should take three iterations", 9, results.size());
+        assertEquals(6.0, results.get(8).getResult(), 0.001);
+    }
+
+    @Test
     public void calculatorShouldBeAbleToHandleCharactersInUserInput() {
         String input = "7 wewe +";
         List<CalculationResult> results = calculator.calculate(numbers, input);
