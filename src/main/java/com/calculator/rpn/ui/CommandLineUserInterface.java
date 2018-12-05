@@ -20,29 +20,52 @@ public class CommandLineUserInterface implements UserInterface {
         String userInput;
         Deque<Double> numbers = new ArrayDeque<>();
         while (true) {
-            System.out.println("Please enter numbers or/and operations");
+            printMessageToUser();
             userInput = getUserInput(br);
-            if (userInput == null || userInput.equals("q")) {
-                break;
-            }
-            if (userInput.equals("")) {
-                System.out.println("Please enter number or/and operations");
-                continue;
-            }
+            if (handleExitFromApplication(userInput)) break;
+            if (handleEmptyLineInput(userInput)) continue;
             String[] splittedUserInput = userInput.split(" ");
-            Arrays.stream(splittedUserInput).forEach(element -> {
-                OperationExecutor operation = OperationService.getOperation(element);
-                if (operation != null) {
+            calculate(numbers, splittedUserInput);
+        }
+    }
+
+    private void calculate(Deque<Double> numbers, String[] splittedUserInput) {
+        Arrays.stream(splittedUserInput).forEach(element -> {
+            OperationExecutor operation = OperationService.getOperation(element);
+            if (operation != null) {
+                if (numbers.size() > 1) {
                     Double secondNumber = numbers.pop();
                     Double firstNumber = numbers.pop();
                     Double result = operation.calculate(firstNumber, secondNumber);
                     numbers.push(result);
                     System.out.println(numbers.peek());
                 } else {
-                    numbers.push(Double.valueOf(element));
+                    System.out.println("Please add more numbers");
                 }
-            });
+            } else {
+                try {
+                    numbers.push(Double.valueOf(element));
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers supports in input");
+                }
+            }
+        });
+    }
+
+    private void printMessageToUser() {
+        System.out.println("Please enter numbers or/and operations");
+    }
+
+    private boolean handleEmptyLineInput(String userInput) {
+        if (userInput.equals("")) {
+            printMessageToUser();
+            return true;
         }
+        return false;
+    }
+
+    private boolean handleExitFromApplication(String userInput) {
+        return userInput == null || userInput.equals("q");
     }
 
     private String getUserInput(BufferedReader br) {
