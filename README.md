@@ -81,7 +81,7 @@ Also I added some wrapper for response from `calculate` method from `ReversePoli
 could decide witch output he would show to user of his UI and in that way `ReversePolishNotationCalculator` doesn't know anything about its user
 and only provide results of his actions inside.
 
-I covered most used operating by unit test, but of course there is lot to cover else.
+I covered most used operating by unit tests, but of course there is lot to cover else.
 
 ###Possible improvements
     Functionality:
