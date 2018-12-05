@@ -1,62 +1,60 @@
 package com.calculator.rpn.ui;
 
-import com.calculator.rpn.operation.OperationExecutor;
-import com.calculator.rpn.service.OperationService;
+import com.calculator.rpn.entity.CalculationResult;
+import com.calculator.rpn.service.calculator.Calculator;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.Deque;
+import java.util.List;
+
+import static com.calculator.rpn.entity.CalculationCode.*;
 
 public class CommandLineUserInterface implements UserInterface {
+
+    private Calculator calculator;
+
+    public CommandLineUserInterface(Calculator calculator) {
+        this.calculator = calculator;
+    }
 
     @Override
     public void run() {
         InputStreamReader isr = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(isr);
-
         String userInput;
         Deque<Double> numbers = new ArrayDeque<>();
         while (true) {
             printMessageToUser();
             userInput = getUserInput(br);
-            if (handleExitFromApplication(userInput)) break;
-            if (handleEmptyLineInput(userInput)) continue;
-            String[] splittedUserInput = userInput.split(" ");
-            calculate(numbers, splittedUserInput);
+            if (exitFromApplication(userInput)) break;
+            if (emptyLineInput(userInput)) continue;
+            List<CalculationResult> results = calculator.calculate(numbers, userInput);
+            printResults(results);
         }
     }
 
-    private void calculate(Deque<Double> numbers, String[] splittedUserInput) {
-        Arrays.stream(splittedUserInput).forEach(element -> {
-            OperationExecutor operation = OperationService.getOperation(element);
-            if (operation != null) {
-                if (numbers.size() > 1) {
-                    Double secondNumber = numbers.pop();
-                    Double firstNumber = numbers.pop();
-                    Double result = operation.calculate(firstNumber, secondNumber);
-                    numbers.push(result);
-                    System.out.println(numbers.peek());
-                } else {
-                    System.out.println("Please add more numbers");
-                }
-            } else {
-                try {
-                    numbers.push(Double.valueOf(element));
-                } catch (NumberFormatException e) {
-                    System.out.println("Only numbers supports in input");
-                }
+    private void printResults(List<CalculationResult> results) {
+        for (CalculationResult result : results) {
+            if (result.getCalculationCode() == CALCULATED) {
+                System.out.println(result.getResult());
             }
-        });
+            if (result.getCalculationCode() == ERROR_NUMBER_PARSING) {
+                System.out.println("Only numbers supported");
+            }
+            if (result.getCalculationCode() == ERROR_CALCULATION) {
+                System.out.println("Please add more numbers");
+            }
+        }
     }
 
     private void printMessageToUser() {
         System.out.println("Please enter numbers or/and operations");
     }
 
-    private boolean handleEmptyLineInput(String userInput) {
+    private boolean emptyLineInput(String userInput) {
         if (userInput.equals("")) {
             printMessageToUser();
             return true;
@@ -64,7 +62,7 @@ public class CommandLineUserInterface implements UserInterface {
         return false;
     }
 
-    private boolean handleExitFromApplication(String userInput) {
+    private boolean exitFromApplication(String userInput) {
         return userInput == null || userInput.equals("q");
     }
 
@@ -72,8 +70,9 @@ public class CommandLineUserInterface implements UserInterface {
         try {
             return br.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Some problem with input";
+            System.out.println(message);
+            throw new RuntimeException(message);
         }
-        return null;
     }
 }
