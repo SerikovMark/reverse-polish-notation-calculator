@@ -13,7 +13,7 @@ In order to build application just run
 `mvn clean package` or `mvn clean install` if you want to install jar file in .m2 directory (maven required)
 
 ### Run the application
-In order to run application just type in command line `java -jar calculator-application.jar`
+In order to run application just type in command line `java -jar calculator-application-1.0-SNAPSHOT.jar`
 
 ### Usage
 You can pass all your input in one line, for example `3 1 * 1 / 5 - 8 +`, `5 3 2 + /`, or separate it as a different inputs
