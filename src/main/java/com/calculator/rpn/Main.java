@@ -1,5 +1,7 @@
 package com.calculator.rpn;
 
+import com.calculator.rpn.service.OperationService;
+
 public class Main {
     public static void main(String[] args) {
         InitEnv();
@@ -11,6 +13,6 @@ public class Main {
     }
 
     private static void InitEnv() {
-
+        OperationService.init();
     }
 }
