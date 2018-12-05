@@ -26,4 +26,8 @@ public class OperationService {
     public static Set<String> getSupportedOperations() {
         return operations.keySet();
     }
+
+    public static void register(String operatorSignature, OperationExecutor operationExecutor) {
+        operations.put(operatorSignature, operationExecutor);
+    }
 }
