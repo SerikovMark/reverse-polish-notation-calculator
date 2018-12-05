@@ -30,7 +30,7 @@ You can pass all your input in one line, for example `3 1 * 1 / 5 - 8 +`, `5 3 2
 4.0
 ```  
 
-If you want to exit in any time of execution just type char `q` and press enter or use keyboard combination `Ctr + D`
+If you want to exit in any time of execution just type char `q` and press enter or close std input.
 
 ###Maven dependency
 If you installed application in .m2 directory or your nexus or analogue artifacts repository you can add it as maven 
