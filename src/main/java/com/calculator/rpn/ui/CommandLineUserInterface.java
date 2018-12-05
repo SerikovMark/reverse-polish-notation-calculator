@@ -1,6 +1,7 @@
 package com.calculator.rpn.ui;
 
 import com.calculator.rpn.entity.CalculationResult;
+import com.calculator.rpn.service.OperationService;
 import com.calculator.rpn.service.calculator.Calculator;
 
 import java.io.BufferedReader;
@@ -42,7 +43,8 @@ public class CommandLineUserInterface implements UserInterface {
                 System.out.println(result.getResult());
             }
             if (result.getCalculationCode() == ERROR_NUMBER_PARSING) {
-                System.out.println("Only numbers supported");
+                System.out.println("Only numbers and operators such as " + OperationService.getSupportedOperations()
+                        + " supported");
             }
             if (result.getCalculationCode() == ERROR_CALCULATION) {
                 System.out.println("Please add more numbers");

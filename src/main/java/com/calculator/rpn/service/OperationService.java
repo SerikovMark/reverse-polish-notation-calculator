@@ -4,6 +4,7 @@ import com.calculator.rpn.operation.OperationExecutor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class OperationService {
     private static Map<String, OperationExecutor> operations = new HashMap<>();
@@ -20,5 +21,9 @@ public class OperationService {
 
     public static OperationExecutor getOperation(String key) {
         return operations.get(key);
+    }
+
+    public static Set<String> getSupportedOperations() {
+        return operations.keySet();
     }
 }

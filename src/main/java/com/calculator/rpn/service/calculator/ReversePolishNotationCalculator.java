@@ -15,9 +15,11 @@ public class ReversePolishNotationCalculator implements Calculator {
 
     @Override
     public List<CalculationResult> calculate(Deque<Double> numbers, String userInput) {
+        checkParameters(numbers, userInput);
         String[] userInputs = userInput.split(" ");
         List<CalculationResult> results = new ArrayList<>();
         Arrays.stream(userInputs).forEach(element -> {
+            element = element.trim();
             OperationExecutor operation = OperationService.getOperation(element);
             if (operation != null) {
                 if (numbers.size() > 1) {
@@ -39,5 +41,13 @@ public class ReversePolishNotationCalculator implements Calculator {
             }
         });
         return results;
+    }
+
+    private void checkParameters(Deque<Double> numbers, String userInput) {
+        if (numbers == null || userInput == null) {
+            String message = "Numbers and user input should be initialized. Numbers: " +
+                    numbers + ", user input: " + userInput;
+            throw new RuntimeException(message);
+        }
     }
 }
