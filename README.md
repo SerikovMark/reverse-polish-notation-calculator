@@ -1,4 +1,4 @@
-#calculator-application
+# calculator-application
 This is calculator application with implementation of reverse polish notation calculator. Now supported only command line mode.
 Or you can just build a project and include it as a maven dependency or add jar file to class path of your application
 
